@@ -29,25 +29,54 @@ Cypress.Commands.add('token', (email, senha) => {
         url: 'login',
         body: {
             "email": email,
-            "password": senha 
+            "password": senha
         }
     }).then((response) => {
         expect(response.status).to.equal(200)
         return response.body.authorization
     })
- })
+})
 
- Cypress.Commands.add('cadastrarProduto' , (token, produto, preco, descricao, quantidade) =>{
+Cypress.Commands.add('cadastrarProduto', (token, produto, preco, descricao, quantidade) => {
     cy.request({
-        method: 'POST', 
+        method: 'POST',
         url: 'produtos',
-        headers: {authorization: token}, 
+        headers: { authorization: token },
         body: {
             "nome": produto,
             "preco": preco,
             "descricao": descricao,
             "quantidade": quantidade
-          }, 
-          failOnStatusCode: false
+        },
+        failOnStatusCode: false
     })
- })
+})
+
+Cypress.Commands.add('cadastrarUsuario', (nome, email, senha) => {
+    cy.request({
+        method: 'POST',
+        url: 'usuarios',
+        failOnStatusCode: false,
+        body: {
+            "nome": nome,
+            "email": email,
+            "password": senha,
+            "administrador": "true"
+        }
+    })
+
+})
+
+Cypress.Commands.add('cadastrarUsuarioFaker', (nomeFaker, emailFaker, senhaFaker) => {
+       cy.request({
+        method: 'POST',
+        url: 'usuarios',
+        failOnStatusCode: false,
+        body: {
+            "nome": nomeFaker,
+            "email": emailFaker,
+            "password": senhaFaker,
+            "administrador": "true"
+        }
+    })
+})
